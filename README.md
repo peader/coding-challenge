@@ -42,4 +42,7 @@ pip install sqlalchemy alembic
 - alembic Setup (migration tool)
 ``` bash
 alembic init alembic
+alembic revision --autogenerate -m "init"
 ```
+
+

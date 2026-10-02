@@ -11,19 +11,21 @@ from pydantic import conint
 
 from models import Error, Todo
 
+from repository import repository
+
 app = FastAPI(
-    version='1.0.0',
-    title='Swagger Todo App',
-    license={'name': 'MIT'},
-    servers=[{'url': 'http://todoapp.swagger.io/v1'}],
+    version="1.0.0",
+    title="Swagger Todo App",
+    license={"name": "MIT"},
+    servers=[{"url": "http://127.0.0.1:8000"}],
 )
 
 
 @app.get(
-    '/todos',
+    "/todos",
     response_model=List[Todo],
-    responses={'default': {'model': Error}},
-    tags=['todo'],
+    responses={"default": {"model": Error}},
+    tags=["todo"],
 )
 def list_todo(limit: Optional[conint(le=100)] = None) -> Union[List[Todo], Error]:
     """
@@ -33,24 +35,27 @@ def list_todo(limit: Optional[conint(le=100)] = None) -> Union[List[Todo], Error
 
 
 @app.post(
-    '/todos',
+    "/todos",
     response_model=None,
     status_code=201,
-    responses={'default': {'model': Error}},
-    tags=['todo'],
+    responses={"default": {"model": Error}},
+    tags=["todo"],
 )
 def create_todo(body: Todo) -> Optional[Error]:
     """
     Create a todo
     """
+    repo = repository()
+    print(body.name)
+    repo.createTodo(body)
     pass
 
 
 @app.put(
-    '/todos',
+    "/todos",
     response_model=None,
-    responses={'default': {'model': Error}},
-    tags=['todo'],
+    responses={"default": {"model": Error}},
+    tags=["todo"],
 )
 def update_todo(body: Todo) -> Optional[Error]:
     """
@@ -60,12 +65,12 @@ def update_todo(body: Todo) -> Optional[Error]:
 
 
 @app.get(
-    '/todos/{todoId}',
+    "/todos/{todoId}",
     response_model=Todo,
-    responses={'default': {'model': Error}},
-    tags=['todos'],
+    responses={"default": {"model": Error}},
+    tags=["todos"],
 )
-def show_todo_by_id(todo_id: str = Path(..., alias='todoId')) -> Union[Todo, Error]:
+def show_todo_by_id(todo_id: str = Path(..., alias="todoId")) -> Union[Todo, Error]:
     """
     Info for a specific todoId
     """
@@ -73,13 +78,13 @@ def show_todo_by_id(todo_id: str = Path(..., alias='todoId')) -> Union[Todo, Err
 
 
 @app.delete(
-    '/todos/{todoId}',
+    "/todos/{todoId}",
     response_model=None,
     status_code=204,
-    responses={'default': {'model': Error}},
-    tags=['todo'],
+    responses={"default": {"model": Error}},
+    tags=["todo"],
 )
-def delete_todo(todo_id: str = Path(..., alias='todoId')) -> Optional[Error]:
+def delete_todo(todo_id: str = Path(..., alias="todoId")) -> Optional[Error]:
     """
     Delete a todo
     """
