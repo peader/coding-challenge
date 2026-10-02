@@ -30,7 +30,7 @@ class repository:
             print(t.name)
 
 
-# test = repository()
+test = repository()
 # testControllerTodo = Todo(123, "plumber")
 # test.createTodo()
-# test.fetchAllTodos()
+test.fetchAllTodos()

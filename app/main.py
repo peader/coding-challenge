@@ -20,6 +20,8 @@ app = FastAPI(
     servers=[{"url": "http://127.0.0.1:8000"}],
 )
 
+repo = repository()
+
 
 @app.get(
     "/todos",
@@ -45,7 +47,6 @@ def create_todo(body: Todo) -> Optional[Error]:
     """
     Create a todo
     """
-    repo = repository()
     print(body.name)
     repo.createTodo(body)
     pass
