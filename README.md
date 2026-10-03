@@ -45,4 +45,9 @@ alembic init alembic
 alembic revision --autogenerate -m "init"
 ```
 
+# Docker setup
+``` bash
+docker build --tag todo .
+docker run -d -p 8000:80 todo
+```
 

@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  db:
+    image: mariadb
+    environment:
+      - MYSQL_DATABASE=todos
+      - MYSQL_USER=todoapp
+      - MYSQL_PASSWORD=plumbus
+      - MYSQL_ROOT_PASSWORD=plumbus
+    command: --default-authentication-plugin=mysql_native_password
+    restart: unless-stopped
+    volumes:
+      - db-data:/var/lib/mysql
+
+  todo-webapp:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_URL=mariadb+pymysql://todoapp:plumbus@db/todos?charset=utf8mb4
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    depends_on:
+      - db
+
+volumes:
+  db-data:
