@@ -210,6 +210,10 @@
           },
           "tag": {
             "type": "string"
+          },
+          "reminder": {
+            "type": "string",
+            "format": "date-time-local"
           }
         }
       },
