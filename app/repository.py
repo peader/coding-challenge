@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from pydantic import AwareDatetime
 
@@ -10,7 +11,11 @@ from models import Todo
 
 class repository:
     def __init__(self):
-        engine = create_engine("sqlite:///app.db")
+        DATABASE_URL = os.environ.get("DATABASE_URL")
+        print(DATABASE_URL)
+        if DATABASE_URL == None:
+            DATABASE_URL = "sqlite:///app.db"
+        engine = create_engine(DATABASE_URL)
         Session = sessionmaker(bind=engine)
         self.session = Session()
 
@@ -26,11 +31,15 @@ class repository:
 
     def deleteTodo(self, id):
         todoToDelete = self.session.query(dbTodo).filter_by(id=id).first()
+        if todoToDelete == None:
+            return
         self.session.delete(todoToDelete)
         self.session.commit()
 
     def updateTodo(self, updatedTodo: Todo):
         dbTodoToUpdate = self.session.query(dbTodo).filter_by(id=updatedTodo.id).first()
+        if dbTodoToUpdate == None:
+            return
         dbTodoToUpdate.name = updatedTodo.name
         dbTodoToUpdate.tag = updatedTodo.tag
         dbTodoToUpdate.reminderDateTime = updatedTodo.reminder

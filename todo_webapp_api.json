@@ -213,7 +213,7 @@
           },
           "reminder": {
             "type": "string",
-            "format": "date-time-local"
+            "format": "date"
           }
         }
       },
