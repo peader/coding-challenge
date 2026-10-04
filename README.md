@@ -1,9 +1,16 @@
+## Quick start
+- cd into the project dir
+``` bash
+docker compose up -d
+```
+- open a browser at http://127.0.0.1:8000/docs
+
 ## The plan
 - take an example openapi crud yaml description
 - modify it for our todo app
 - install fastapi and the openapi python generator in a venv
 
-## Setup 
+## local dev setup 
 - create a python virtual environment
 ``` bash
 python -m venv .venv
@@ -36,6 +43,7 @@ uv run fastapi dev
 - remove the "." from the models import in the main.py
 
 # Database Setup
+Note: for local dev work I used the default sqlite db
 ```bash
 pip install sqlalchemy alembic
 ```
