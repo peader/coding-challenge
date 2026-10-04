@@ -1,8 +1,6 @@
 import os
-from datetime import datetime
-from pydantic import AwareDatetime
 
-from dbmodels import dbTodo
+from dbmodels import dbTodo, Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -12,12 +10,13 @@ from models import Todo
 class repository:
     def __init__(self):
         DATABASE_URL = os.environ.get("DATABASE_URL")
-        print(DATABASE_URL)
         if DATABASE_URL == None:
             DATABASE_URL = "sqlite:///app.db"
         engine = create_engine(DATABASE_URL)
         Session = sessionmaker(bind=engine)
         self.session = Session()
+        # Create the database table if it doesn't already exist
+        Base.metadata.create_all(engine)
 
     def __del__(self):
         print("get that session out of here")
