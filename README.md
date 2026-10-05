@@ -1,9 +1,10 @@
 ## Quick start
 - cd into the project dir
 ``` bash
-docker compose up -d
+docker compose --env-file .env.example up
 ```
 - open a browser at http://127.0.0.1:8000/todoapp/
+**Note:** For the love of all that is holy please change the default passwords found in example.env by using a .env file of your own with your own credentials.
 
 ## The plan
 - take an example openapi crud yaml description

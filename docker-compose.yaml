@@ -4,10 +4,10 @@ services:
   db:
     image: mariadb
     environment:
-      - MYSQL_DATABASE=todos
-      - MYSQL_USER=todoapp
-      - MYSQL_PASSWORD=plumbus
-      - MYSQL_ROOT_PASSWORD=plumbus
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       start_period: 10s
@@ -23,7 +23,7 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      - DATABASE_URL=mariadb+pymysql://todoapp:plumbus@db/todos?charset=utf8mb4
+      DATABASE_URL: mariadb+pymysql://${MYSQL_USER}:${MYSQL_PASSWORD}@db/${MYSQL_DATABASE}?charset=utf8mb4
     restart: unless-stopped
     ports:
       - 8000:80
