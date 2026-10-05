@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>NEON / Todo terminal</title>
+<style>
+:root{--bg:#090b14;--panel:#111522;--line:#2b3146;--text:#edf1ff;--muted:#9da7bf;--cyan:#57f5d5;--pink:#ff63bb;--yellow:#eaff7b;font-family:Consolas,"Courier New",monospace;color:var(--text);background:var(--bg)}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 85% 5%,#3b173955,transparent 45%),linear-gradient(#57f5d507 1px,transparent 1px),linear-gradient(90deg,#57f5d507 1px,transparent 1px);background-size:auto,48px 48px,48px 48px}button,input{font:inherit}button{cursor:pointer}button:disabled{cursor:wait;opacity:.45}button,input{border:1px solid var(--line);border-radius:4px}button{background:#191f30;color:var(--text);padding:11px 16px}button:hover:not(:disabled){border-color:var(--cyan);color:var(--cyan)}input{background:#090d18;color:var(--text);padding:12px;min-width:0;width:100%}input:focus-visible,button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}label{display:block;color:var(--muted);font-size:12px;letter-spacing:.06em}label input{margin-top:8px}.shell{max-width:1060px;margin:auto;padding:40px 28px}.topline{display:flex;justify-content:space-between;gap:20px;font-size:12px;color:var(--cyan);letter-spacing:.1em}.brand{border:1px solid var(--cyan);padding:5px 8px}.connection{align-self:center;color:var(--muted)}.connection.online{color:var(--cyan)}header{padding:42px 0 30px;border-bottom:1px solid var(--line)}h1{font-family:Arial,sans-serif;letter-spacing:-.07em;font-size:clamp(48px,9vw,88px);line-height:.95;margin:0;font-weight:900}h1 span{color:var(--cyan);text-shadow:3px 2px var(--pink)}.intro{color:var(--muted);font-size:14px;line-height:1.7;margin:20px 0 0}.stats{display:flex;gap:36px;margin:25px 0}.stat strong{display:block;font-size:26px;color:var(--text);margin-bottom:5px}.stat{font-size:11px;color:var(--muted);letter-spacing:.07em}.stat:last-child strong{color:var(--pink)}.panel{background:var(--panel);border:1px solid var(--line);border-top:2px solid var(--cyan);padding:24px;margin-top:28px}.section-label{font-size:12px;color:var(--cyan);letter-spacing:.12em;margin:0 0 20px}.create{display:grid;grid-template-columns:1fr 160px 175px auto;align-items:end;gap:12px}.primary{background:var(--cyan);color:#091712;font-weight:bold;border-color:var(--cyan);white-space:nowrap}.primary:hover:not(:disabled){background:var(--yellow);color:#091712;border-color:var(--yellow)}.toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:32px 0 16px}.tabs{display:flex;gap:6px;flex-wrap:wrap}.tabs button{font-size:12px}.tabs button[aria-pressed=true]{background:#57f5d515;border-color:var(--cyan);color:var(--cyan)}.small{font-size:12px;padding:9px 12px}.list{display:grid;gap:10px}.todo{display:grid;grid-template-columns:auto 1fr auto;gap:16px;padding:20px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--cyan);align-items:start}.todo.done{border-left-color:var(--line)}.todo.overdue{border-left-color:var(--pink)}.toggle{width:24px;height:24px;accent-color:var(--cyan);margin:1px 0 0;cursor:pointer}.title{font:600 17px Arial,sans-serif;line-height:1.5;overflow-wrap:anywhere}.done .title{text-decoration:line-through;color:var(--muted)}.meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px;font-size:11px;color:var(--muted)}.tag{padding:4px 7px;border:1px solid var(--line);color:var(--cyan);overflow-wrap:anywhere}.due{color:var(--pink)}.reminder-edit{display:flex;gap:8px;align-items:end;margin-top:16px;flex-wrap:wrap}.reminder-edit label{max-width:180px}.reminder-edit input{padding:8px}.danger{color:var(--pink);font-size:12px;padding:8px 10px}.empty{padding:52px 20px;text-align:center;border:1px dashed var(--line);color:var(--muted);line-height:1.8}.empty strong{color:var(--text);display:block;margin-bottom:8px}.status{font-size:13px;margin:20px 0 0;padding:12px 15px;border:1px solid var(--cyan);background:#57f5d50a;line-height:1.6;overflow-wrap:anywhere}.status.error{color:#ffb4d9;border-color:var(--pink);background:#ff63bb0a}.status:empty{display:none}details.settings{margin-top:28px;border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font-size:12px}summary{cursor:pointer}#settings-form{display:flex;gap:12px;align-items:end;margin-top:18px}#settings-form label{flex:1}.note{font-size:12px;color:var(--muted);line-height:1.8}footer{display:flex;justify-content:space-between;gap:15px;margin-top:32px;color:var(--muted);font-size:10px;letter-spacing:.08em}.noscript{color:var(--pink)}@media(max-width:850px){.create{grid-template-columns:1fr 1fr}.create label:first-child{grid-column:1/-1}}@media(max-width:520px){.shell{padding:24px 16px}.panel{padding:18px}.create{grid-template-columns:1fr}.create label:first-child{grid-column:auto}.toolbar{align-items:start}.todo{padding:16px;gap:10px}.todo>.danger{grid-column:2;justify-self:start}.stats{gap:25px}#settings-form{flex-direction:column;align-items:stretch}footer{flex-direction:column}}
+</style>
+</head>
+<body>
+<main class="shell">
+<div class="topline"><span class="brand">NEON / TASK SYSTEM</span><span id="connection" class="connection" role="status">CONNECTING…</span></div>
+<header><h1>Less noise.<br><span>More done.</span></h1><p class="intro">Your next move, on the grid.<br>Capture tasks. Set reminders. Clear the queue.</p></header>
+<div class="stats" aria-label="Todo counts"><div class="stat"><strong id="active-count">0</strong>ACTIVE</div><div class="stat"><strong id="done-count">0</strong>FINISHED</div><div class="stat"><strong id="due-count">0</strong>DUE REMINDERS</div></div>
+<section class="panel" aria-labelledby="create-heading"><h2 id="create-heading" class="section-label">01 / NEW TASK</h2>
+<form id="create-form" class="create"><label>TODO NAME<input id="name" name="name" required maxlength="500" placeholder="What's your next move?" autocomplete="off"></label><label>TAG / OPTIONAL<input id="tag" name="tag" maxlength="100" placeholder="e.g. work"></label><label>REMINDER / OPTIONAL<input id="reminder" name="reminder" type="date" min="0001-01-01" max="9999-12-31"></label><button class="primary" type="submit">+ Add todo</button></form></section>
+<div id="status" class="status" role="status" aria-live="polite"></div>
+<section aria-label="Todos"><div class="toolbar"><div class="tabs" role="group" aria-label="Filter todos"><button type="button" data-filter="all" aria-pressed="true">All todos</button><button type="button" data-filter="due" aria-pressed="false">Due reminders</button><button type="button" data-filter="finished" aria-pressed="false">Finished</button></div><button id="refresh" class="small" type="button">↻ Refresh</button></div><div id="list" class="list" aria-busy="true"></div></section>
+<details class="settings"><summary>API connection &amp; storage</summary><form id="settings-form"><label>API BASE URL<input id="api-url" type="url" required value="http://127.0.0.1:8000"></label><button class="small" type="submit">Connect</button></form><p class="note">Todos and reminder dates are saved through your API. Finished status is stored in this browser because the API schema has no completion field. Due reminders are unfinished todos with a reminder on or before today's local date. This page lists reminders; it does not send background notifications.</p><p class="note">Serve this file from your API's origin, or allow this page's origin in your API's CORS settings for GET, POST, PUT, DELETE and the Content-Type header. No external libraries or accounts required.</p></details>
+<footer><span>PLAIN HTML / CSS / JAVASCRIPT</span><span id="today-label"></span></footer>
+<noscript><p class="noscript">Enable JavaScript to use this app.</p></noscript>
+</main>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+let storageAvailable = true;
+function readStorage(key, fallback) { try { const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; } catch { storageAvailable = false; return fallback; } }
+function writeStorage(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); return true; } catch { storageAvailable = false; return false; } }
+function normalizeBase(value) { const url = new URL(value); if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password || url.search || url.hash) throw new Error('Use an HTTP or HTTPS API URL without credentials, query or fragment.'); return url.href.replace(/\/$/, ''); }
+let apiBase;
+try { apiBase = normalizeBase(readStorage('neon-api', 'http://127.0.0.1:8000')); } catch { apiBase = 'http://127.0.0.1:8000'; }
+let todos = [], filter = 'all', busy = false, loaded = false;
+function completionKey() { return 'neon-finished:' + apiBase; }
+function readCompleted() { const value = readStorage(completionKey(), []); return new Set(Array.isArray(value) ? value.filter(x => typeof x === 'string') : []); }
+let completed = readCompleted();
+$('api-url').value = apiBase;
+function today() { const date = new Date(); return [date.getFullYear(), String(date.getMonth() + 1).padStart(2, '0'), String(date.getDate()).padStart(2, '0')].join('-'); }
+function validDate(value) { if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false; const date = new Date(value + 'T00:00:00Z'); return !isNaN(date) && date.toISOString().slice(0, 10) === value; }
+function isDone(todo) { return completed.has(String(todo.id)); }
+function isDue(todo) { return !isDone(todo) && validDate(todo.reminder) && todo.reminder <= today(); }
+function message(text, error = false) { $('status').textContent = text; $('status').classList.toggle('error', error); }
+function connection(ok) { $('connection').textContent = ok ? '● API ONLINE' : '○ API OFFLINE'; $('connection').classList.toggle('online', ok); }
+function setBusy(value) { busy = value; document.querySelectorAll('button, input').forEach(el => el.disabled = value); $('list').setAttribute('aria-busy', String(value)); }
+async function request(path, options = {}) {
+ const url = new URL(path, apiBase + '/');
+ if (url.origin !== new URL(apiBase).origin) throw new Error('The API returned a next-page link on a different origin.');
+ let response;
+ try { response = await fetch(url, {...options, headers: {'Accept': 'application/json', ...(options.body ? {'Content-Type': 'application/json'} : {}), ...options.headers}, signal: AbortSignal.timeout(15000)}); }
+ catch (error) { connection(false); throw new Error(error.name === 'TimeoutError' ? 'API request timed out. Refresh to check the result before retrying.' : 'Cannot reach the API. Check its URL, that the server is running, and its CORS settings.'); }
+ connection(true);
+ if (!response.ok) { let detail = ''; try { detail = (await response.json()).message || ''; } catch {} throw new Error('API error ' + response.status + (detail ? ': ' + detail : '')); }
+ return response;
+}
+async function loadTodos() {
+ const collected = [], visited = new Set(); let next = apiBase + '/todos?limit=100';
+ while (next) {
+  if (visited.has(next) || visited.size >= 1000) throw new Error('Invalid or excessive API pagination.');
+  visited.add(next);
+  const response = await request(next), page = await response.json();
+  if (!Array.isArray(page) || page.some(todo => !todo || !Number.isSafeInteger(todo.id) || typeof todo.name !== 'string')) throw new Error('The API returned invalid todos or IDs outside JavaScript’s safe integer range.');
+  collected.push(...page);
+  const link = response.headers.get('x-next'); next = link ? new URL(link, next).href : null;
+ }
+ todos = Array.from(new Map(collected.map(todo => [String(todo.id), todo])).values()); loaded = true; render();
+}
+function node(tag, className, text) { const el = document.createElement(tag); if (className) el.className = className; if (text !== undefined) el.textContent = text; return el; }
+function render() {
+ $('today-label').textContent = 'LOCAL DATE / ' + today();
+ $('active-count').textContent = todos.filter(todo => !isDone(todo)).length;
+ $('done-count').textContent = todos.filter(isDone).length;
+ $('due-count').textContent = todos.filter(isDue).length;
+ document.querySelectorAll('[data-filter]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === filter)));
+ const list = $('list'); list.replaceChildren();
+ const visible = todos.filter(todo => filter === 'due' ? isDue(todo) : filter === 'finished' ? isDone(todo) : true).sort((a,b) => Number(isDone(a)) - Number(isDone(b)) || String(a.reminder || '9999-12-31').localeCompare(String(b.reminder || '9999-12-31')) || a.id - b.id);
+ if (!visible.length) { const empty = node('div', 'empty'); empty.append(node('strong', '', !loaded ? 'Waiting for the API' : filter === 'due' ? 'You’re clear for today.' : filter === 'finished' ? 'No finished tasks yet.' : 'Your grid is clear.'), node('span', '', !loaded ? 'Connect your Todo API, then refresh.' : filter === 'due' ? 'No unfinished reminders on or before today.' : 'Add a todo above to get started.')); list.append(empty); }
+ for (const todo of visible) {
+  const card = node('article', 'todo' + (isDone(todo) ? ' done' : isDue(todo) ? ' overdue' : ''));
+  const checkbox = node('input', 'toggle'); checkbox.type = 'checkbox'; checkbox.checked = isDone(todo); checkbox.setAttribute('aria-label', (isDone(todo) ? 'Reopen ' : 'Mark finished: ') + todo.name);
+  checkbox.addEventListener('change', () => { if (checkbox.checked) completed.add(String(todo.id)); else completed.delete(String(todo.id)); const saved = writeStorage(completionKey(), [...completed]); render(); message(saved ? (checkbox.checked ? 'Todo finished.' : 'Todo reopened.') : 'Finished status changed for this session. Browser storage is unavailable.', !saved); });
+  const content = node('div'); content.append(node('div', 'title', todo.name));
+  const meta = node('div', 'meta'); meta.append(node('span', '', '#' + todo.id)); if (todo.tag) meta.append(node('span', 'tag', todo.tag));
+  meta.append(node('span', isDue(todo) ? 'due' : '', todo.reminder ? (isDue(todo) ? (todo.reminder === today() ? 'DUE TODAY / ' : 'OVERDUE / ') : 'REMINDER / ') + todo.reminder : 'NO REMINDER'));
+  if (isDone(todo)) meta.append(node('span', '', 'FINISHED')); content.append(meta);
+  const edit = node('form', 'reminder-edit'), label = node('label', '', 'REMINDER DATE'), date = node('input'); date.type = 'date'; date.min = '0001-01-01'; date.max = '9999-12-31'; date.value = validDate(todo.reminder) ? todo.reminder : ''; date.setAttribute('aria-label', 'Reminder for ' + todo.name); label.append(date);
+  const save = node('button', 'small', 'Save date'); save.type = 'submit'; const clear = node('button', 'small', 'Clear'); clear.type = 'button'; clear.addEventListener('click', () => { date.value = ''; edit.requestSubmit(); }); edit.append(label, save, clear);
+  edit.addEventListener('submit', event => { event.preventDefault(); run(async () => { const payload = {id: todo.id, name: todo.name}; if (typeof todo.tag === 'string') payload.tag = todo.tag; if (date.value) payload.reminder = date.value; await request(apiBase + '/todos', {method: 'PUT', body: JSON.stringify(payload)}); todos = todos.map(item => item.id === todo.id ? payload : item); render(); message(date.value ? 'Reminder saved.' : 'Reminder cleared.'); }); }); content.append(edit);
+  const remove = node('button', 'danger', 'Delete'); remove.type = 'button'; remove.setAttribute('aria-label', 'Delete ' + todo.name); remove.addEventListener('click', () => { if (!confirm('Delete “' + todo.name + '”?')) return; run(async () => { await request(apiBase + '/todos/' + encodeURIComponent(todo.id), {method: 'DELETE'}); todos = todos.filter(item => item.id !== todo.id); completed.delete(String(todo.id)); writeStorage(completionKey(), [...completed]); render(); message('Todo deleted.'); }); }); card.append(checkbox, content, remove); list.append(card);
+ }
+ if (busy) document.querySelectorAll('button, input').forEach(el => el.disabled = true);
+}
+async function run(action) { if (busy) return; setBusy(true); try { await action(); } catch (error) { message(error.message, true); } finally { setBusy(false); } }
+$('create-form').addEventListener('submit', event => {
+ event.preventDefault(); const name = $('name').value.trim(); if (!name) { $('name').setCustomValidity('Enter a todo name.'); $('name').reportValidity(); return; }
+ run(async () => {
+  // The contract requires a client-supplied integer ID. Millisecond IDs fit int64
+  // and JavaScript's safe integer range; the server must enforce uniqueness.
+  let id = Date.now(); while (todos.some(todo => todo.id === id)) id++;
+  const payload = {id, name}; if ($('tag').value.trim()) payload.tag = $('tag').value.trim(); if ($('reminder').value) payload.reminder = $('reminder').value;
+  await request(apiBase + '/todos', {method: 'POST', body: JSON.stringify(payload)});
+  $('create-form').reset(); todos.push(payload); loaded = true; filter = 'all'; render();
+  message('Todo created.');
+  try { await loadTodos(); } catch (error) { message('Todo created, but the list could not refresh. ' + error.message, true); }
+ });
+});
+$('name').addEventListener('input', () => $('name').setCustomValidity(''));
+document.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click', () => { filter = button.dataset.filter; render(); }));
+$('refresh').addEventListener('click', () => run(async () => { await loadTodos(); message('Todos refreshed.'); }));
+$('settings-form').addEventListener('submit', event => { event.preventDefault(); run(async () => { const base = normalizeBase($('api-url').value.trim()); apiBase = base; const saved = writeStorage('neon-api', base); completed = readCompleted(); todos = []; loaded = false; render(); await loadTodos(); message(saved ? 'Connected.' : 'Connected. Browser storage is unavailable; settings last for this session.', !saved); }); });
+render(); run(async () => { await loadTodos(); if (!storageAvailable) message('Browser storage is unavailable; finished status will last for this session.', true); });
+// Re-evaluate local calendar dates across midnight and when returning to the tab.
+setInterval(() => { if (!busy) render(); }, 60000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden && !busy) render(); });
+</script>
+</body>
+</html>

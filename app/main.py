@@ -7,6 +7,7 @@ from __future__ import annotations
 from typing import List, Optional, Union
 
 from fastapi import FastAPI, Path
+from fastapi.staticfiles import StaticFiles
 from pydantic import conint
 
 from models import Error, Todo
@@ -18,6 +19,8 @@ app = FastAPI(
     license={"name": "MIT"},
     servers=[{"url": "http://127.0.0.1:8000"}],
 )
+# This line sets up the serving of the frontend
+app.mount("/todoapp", StaticFiles(directory="frontend", html=True), name="static")
 
 repo = repository()
 

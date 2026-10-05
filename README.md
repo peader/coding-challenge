@@ -3,7 +3,7 @@
 ``` bash
 docker compose up -d
 ```
-- open a browser at http://127.0.0.1:8000/docs
+- open a browser at http://127.0.0.1:8000/todoapp/
 
 ## The plan
 - take an example openapi crud yaml description
@@ -59,3 +59,15 @@ docker build --tag todo .
 docker run -d -p 8000:80 todo
 ```
 
+# Frontend
+- The frontend was created with AI. Below is the prompt and model details:
+``` bash
+create a single page html5 Todo app using this openapi spec.
+ability to create todo
+ability to mark todo as finished and delete
+ability to set a reminder
+list todos that have a reminder date at or before current date.
+cyber punk theme.
+as few libraries as possible. simple html html5 javascript
+```
+**Model: **GPT Sol-6.1 medium

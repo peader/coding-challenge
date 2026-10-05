@@ -8,5 +8,5 @@ Base = declarative_base()
 class dbTodo(Base):
     __tablename__ = "todos"
     id = Column(Integer, primary_key=True)
-    name = Column(String(16))
+    name = Column(String(256))
     reminderDateTime = Column(DateTime)
